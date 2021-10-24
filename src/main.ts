@@ -28,7 +28,7 @@ function conditionsMet(): boolean {
   if (seeds.IsCustomRun()) {
     return false;
   }
-  const player = Isaac.GetPlayer();
+  const player = Isaac.GetPlayer(0);
   if (player === undefined) {
     return false;
   }
