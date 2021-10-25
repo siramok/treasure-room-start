@@ -23,6 +23,6 @@ npx eslint --max-warnings 0 src
 # Step 2 - Spell check every file using cspell
 # We use no-progress and no-summary because we want to only output errors
 npx cspell --no-progress --no-summary "src/**/*.ts"
-npx cspell --no-progress --no-summary "mods/metadata.xml"
+npx cspell --no-progress --no-summary "mod/metadata.xml"
 
 echo "Success!"
