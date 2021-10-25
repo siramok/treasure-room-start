@@ -1,5 +1,5 @@
 {
-  "name": "treasure-room-start",
+  "name": "better-coop-item-pedestals",
   "version": "0.0.1",
   "description": "A mod for The Binding of Isaac: Repentance",
   "keywords": [
@@ -15,5 +15,14 @@
     "isaacscript": "^1.1.26",
     "isaacscript-common": "^1.0.350",
     "isaacscript-lint": "^1.0.63"
+  },
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-jsdoc": "^37.0.0",
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }
