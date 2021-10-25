@@ -22,6 +22,5 @@ npx eslint --max-warnings 0 src
 
 # Step 2 - Spell check every file using cspell
 npx cspell --no-progress "src/**/*.ts"
-npx cspell --no-progress "mod/metadata.xml"
 
 echo "Success!"
