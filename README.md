@@ -7,6 +7,7 @@ This mod automatically reseeds runs until you start next to a desired room: trea
 * Preserves your run streak.
 * Support for manually holding R to restart runs.
 * Safeguards to prevent soft-locking (ie: has no effect in seeded runs, since they can't be reseeded).
+* Has no effect when playing as Eden or Tainted Eden to avoid using extra Eden tokens.
 
 # Installation
 Head to the mod's [Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301) and click the green subscribe button. Steam will automatically download, install, and keep the mod up to date for you.
