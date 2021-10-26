@@ -1,4 +1,4 @@
-# Treasure Room Start
+# Treasure Room Start ![Build Status](https://github.com/siramok/treasure-room-start/actions/workflows/ci.yml/badge.svg)
 Treasure Room Start is a mod for *[The Binding of Isaac: Rebirth](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301)*, written in [TypeScript](https://typescriptlang.org) using the [IsaacScript](https://isaacscript.github.io) framework.
 
 This mod automatically reseeds runs until you start next to a desired room: treasure and planetarium rooms enabled by default.
