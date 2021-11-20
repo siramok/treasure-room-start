@@ -1,5 +1,5 @@
-import { isGreedMode, onSetSeed } from "isaacscript-common";
 import { jsonDecode, jsonEncode } from "isaacscript-common/dist/functions/json";
+import { isGreedMode, onSetSeed } from "isaacscript-common/dist/functions/util";
 import { v } from "./config";
 
 // Register the mod
