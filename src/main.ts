@@ -62,7 +62,10 @@ function handleReseed() {
   while (true) {
     for (const i of v.roomIndices) {
       const room = level.GetRoomByIdx(i).Data;
-      if (room !== undefined && v.rooms.has(room.Type)) {
+      if (room === undefined) {
+        continue;
+      }
+      if (v.rooms.has(room.Type)) {
         return;
       }
     }
