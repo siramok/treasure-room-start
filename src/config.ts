@@ -85,4 +85,32 @@ if (ModConfigMenu !== undefined) {
     "Isaac's Bedroom",
     "Caution: You will experience long load times when starting runs if no other rooms are enabled.",
   );
+
+  // Tweaks tab
+  const newSetting: ModConfigMenuSetting = {
+    CurrentSetting: (): boolean => {
+      return v.isEdenEnabled;
+    },
+    Display: (): string => {
+      let onOff = "Disabled";
+      if (v.isEdenEnabled) {
+        onOff = "Enabled";
+      }
+      return `Eden Support: ${onOff}`;
+    },
+    Info: [
+      "Caution: May consume extra Eden tokens. Only enable Eden support if you are okay with that!",
+    ],
+    OnChange: (): void => {
+      if (v.isEdenEnabled) {
+        v.isEdenEnabled = false;
+      } else {
+        v.isEdenEnabled = true;
+      }
+    },
+    Type: ModConfigMenuOptionType.BOOLEAN,
+  };
+  if (ModConfigMenu !== undefined) {
+    ModConfigMenu.AddSetting("TR Start", "Tweaks", newSetting);
+  }
 }
