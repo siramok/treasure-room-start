@@ -11,6 +11,7 @@ export const v = {
     LevelCurse.CURSE_OF_BLIND,
   ],
   isEdenEnabled: false,
+  reseedLimit: 1500,
   roomIndices: [71, 83, 85, 97],
   rooms: new Set<RoomType>(),
   settingsLoaded: false,
@@ -123,6 +124,25 @@ if (ModConfigMenu !== undefined) {
   );
 
   // Tweaks tab
+  ModConfigMenu.AddSetting("TR Start", "Tweaks", {
+    Type: ModConfigMenuOptionType.NUMBER,
+    Minimum: 0,
+    Maximum: 3000,
+    ModifyBy: 100,
+    CurrentSetting: (): number => {
+      return v.reseedLimit;
+    },
+    Display: (): string => {
+      if (v.reseedLimit === 0) {
+        return "Reseed Limit: None";
+      }
+      return `Reseed Limit: ${v.reseedLimit}`;
+    },
+    OnChange: (currentNum: number | boolean | undefined): void => {
+      v.reseedLimit = currentNum as number;
+    },
+    Info: ["Limit the number of reseeds before giving up on the search."],
+  });
   ModConfigMenu.AddSetting("TR Start", "Tweaks", {
     Type: ModConfigMenuOptionType.BOOLEAN,
     CurrentSetting: (): boolean => {

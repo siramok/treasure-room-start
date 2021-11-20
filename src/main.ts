@@ -64,8 +64,13 @@ function postGameStarted(isContinued: boolean) {
 function handleReseed() {
   const game = Game();
   const level = game.GetLevel();
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+  let limit = v.reseedLimit;
+  if (limit === 0) {
+    limit = math.maxinteger;
+  }
+  let numReseeds = 0;
+  while (numReseeds < limit) {
+    numReseeds += 1;
     if (v.curse !== LevelCurse.CURSE_NONE) {
       const curses = level.GetCurses();
       const isCurseActive = (curses & v.curse) !== 0;
