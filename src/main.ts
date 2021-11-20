@@ -64,7 +64,8 @@ function handleReseed() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     for (const i of v.roomIndices) {
-      const room = level.GetRoomByIdx(i).Data;
+      const roomDescriptor = level.GetRoomByIdx(i);
+      const room = roomDescriptor.Data;
       if (room === undefined) {
         continue;
       }
@@ -81,10 +82,12 @@ function loadSettings() {
   if (mod.HasData()) {
     const serialized = Isaac.LoadModData(mod);
     const deserialized = jsonDecode(serialized);
-    if (deserialized.get("version") === v.version) {
+    const savedVersion = deserialized.get("version") as string;
+    if (savedVersion === v.version) {
+      const rooms = deserialized.get("rooms") as RoomType[];
       v.rooms.clear();
-      for (const room of deserialized.get("rooms")) {
-        v.rooms.add(room as RoomType);
+      for (const room of rooms) {
+        v.rooms.add(room);
       }
     }
   }
@@ -93,12 +96,14 @@ function loadSettings() {
 // Encode and save current mod settings
 function saveSettings() {
   const enabledRooms = [];
-  for (const room of v.rooms.values()) {
+  const rooms = v.rooms.values();
+  for (const room of rooms) {
     enabledRooms.push(room);
   }
   const toSave = {
     rooms: enabledRooms,
     version: v.version,
   };
-  mod.SaveData(jsonEncode(toSave));
+  const serialized = jsonEncode(toSave);
+  mod.SaveData(serialized);
 }
