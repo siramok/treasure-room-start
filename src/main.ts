@@ -50,7 +50,6 @@ function conditionsMet(): boolean {
 // Calls handleReseed if appropriate when a new run is started
 function postGameStarted(isContinued: boolean) {
   if (!isContinued && conditionsMet()) {
-    v.hasDesiredRoom = false;
     handleReseed();
   }
 }
@@ -59,12 +58,11 @@ function postGameStarted(isContinued: boolean) {
 function handleReseed() {
   const game = Game();
   const level = game.GetLevel();
-  const roomIndices = [71, 83, 85, 97];
-  while (!v.hasDesiredRoom) {
-    for (const i of roomIndices) {
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    for (const i of v.roomIndices) {
       const room = level.GetRoomByIdx(i).Data;
       if (room !== undefined && v.rooms.has(room.Type)) {
-        v.hasDesiredRoom = true;
         return;
       }
     }
@@ -80,7 +78,7 @@ function loadSettings() {
     if (deserialized.get("version") === v.version) {
       v.rooms.clear();
       for (const room of deserialized.get("rooms")) {
-        v.rooms.add(room);
+        v.rooms.add(room as RoomType);
       }
     }
   }

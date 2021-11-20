@@ -1,7 +1,7 @@
 // Initialize mod variables
 export const v = {
-  hasDesiredRoom: true,
   isEdenEnabled: false,
+  roomIndices: [71, 83, 85, 97],
   rooms: new Set<RoomType>(),
   version: "1.8",
 };
