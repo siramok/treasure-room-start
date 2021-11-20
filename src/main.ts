@@ -1,8 +1,9 @@
+import { isGreedMode, onSetSeed } from "isaacscript-common";
 import { jsonDecode, jsonEncode } from "isaacscript-common/dist/functions/json";
 import { v } from "./config";
 
 // Register the mod
-const mod: Mod = RegisterMod("Treasure Room Start", 1);
+const mod = RegisterMod("Treasure Room Start", 1);
 
 export default function main(): void {
   // Main callback
@@ -15,28 +16,29 @@ export default function main(): void {
   }
 }
 
+// Helper function for detecting if the player is Eden or Tainted Eden
+function isEden(player: EntityPlayer): boolean {
+  const character = player.GetPlayerType();
+
+  return (
+    character === PlayerType.PLAYER_EDEN ||
+    character === PlayerType.PLAYER_EDEN_B
+  );
+}
+
 // Validates that the mod's prerequisites are met before proceeding
 function conditionsMet(): boolean {
-  const game = Game();
-  if (
-    game.Difficulty === Difficulty.DIFFICULTY_GREED ||
-    game.Difficulty === Difficulty.DIFFICULTY_GREEDIER
-  ) {
-    return false;
-  }
-  const seeds = game.GetSeeds();
-  if (seeds.IsCustomRun()) {
-    return false;
-  }
   const player = Isaac.GetPlayer(0);
   if (player === undefined) {
     return false;
   }
-  const playerType = player.GetPlayerType();
-  if (
-    playerType === PlayerType.PLAYER_EDEN ||
-    playerType === PlayerType.PLAYER_EDEN_B
-  ) {
+  if (isEden(player) && !v.isEdenEnabled) {
+    return false;
+  }
+  if (onSetSeed()) {
+    return false;
+  }
+  if (isGreedMode()) {
     return false;
   }
   if (v.rooms.size === 0) {
