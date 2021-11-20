@@ -1,8 +1,19 @@
 // Initialize mod variables
 export const v = {
+  curse: LevelCurse.CURSE_NONE,
+  curseList: [
+    LevelCurse.CURSE_NONE,
+    LevelCurse.CURSE_OF_LABYRINTH,
+    LevelCurse.CURSE_OF_DARKNESS,
+    LevelCurse.CURSE_OF_THE_LOST,
+    LevelCurse.CURSE_OF_THE_UNKNOWN,
+    LevelCurse.CURSE_OF_MAZE,
+    LevelCurse.CURSE_OF_BLIND,
+  ],
   isEdenEnabled: false,
   roomIndices: [71, 83, 85, 97],
   rooms: new Set<RoomType>(),
+  settingsLoaded: false,
   version: "1.9",
 };
 
@@ -16,29 +27,28 @@ if (REPENTANCE === true) {
 
 // Parameterized MCM setting helper
 function addSetting(key: number, description: string, info: string) {
-  const newSetting: ModConfigMenuSetting = {
-    CurrentSetting: (): boolean => {
-      return v.rooms.has(key);
-    },
-    Display: (): string => {
-      let onOff = "Disabled";
-      if (v.rooms.has(key)) {
-        onOff = "Enabled";
-      }
-      return `${description}: ${onOff}`;
-    },
-    Info: [info],
-    OnChange: (): void => {
-      if (v.rooms.has(key)) {
-        v.rooms.delete(key);
-      } else {
-        v.rooms.add(key);
-      }
-    },
-    Type: ModConfigMenuOptionType.BOOLEAN,
-  };
   if (ModConfigMenu !== undefined) {
-    ModConfigMenu.AddSetting("TR Start", "General", newSetting);
+    ModConfigMenu.AddSetting("TR Start", "General", {
+      Type: ModConfigMenuOptionType.BOOLEAN,
+      CurrentSetting: (): boolean => {
+        return v.rooms.has(key);
+      },
+      Display: (): string => {
+        let onOff = "Disabled";
+        if (v.rooms.has(key)) {
+          onOff = "Enabled";
+        }
+        return `${description}: ${onOff}`;
+      },
+      OnChange: (): void => {
+        if (v.rooms.has(key)) {
+          v.rooms.delete(key);
+        } else {
+          v.rooms.add(key);
+        }
+      },
+      Info: [info],
+    });
   }
 }
 
@@ -59,6 +69,32 @@ if (ModConfigMenu !== undefined) {
   });
 
   // General tab
+  const curseNames = new Map<LevelCurse, string>([
+    [LevelCurse.CURSE_NONE, "None"],
+    [LevelCurse.CURSE_OF_LABYRINTH, "Curse of the Labyrinth"],
+    [LevelCurse.CURSE_OF_DARKNESS, "Curse of Darkness"],
+    [LevelCurse.CURSE_OF_THE_LOST, "Curse of the Lost"],
+    [LevelCurse.CURSE_OF_THE_UNKNOWN, "Curse of the Unknown"],
+    [LevelCurse.CURSE_OF_MAZE, "Curse of the Maze"],
+    [LevelCurse.CURSE_OF_BLIND, "Curse of the Blind"],
+  ]);
+  ModConfigMenu.AddSetting("TR Start", "General", {
+    Type: ModConfigMenuOptionType.NUMBER,
+    CurrentSetting: (): number => {
+      return v.curseList.indexOf(v.curse);
+    },
+    Minimum: 0,
+    Maximum: v.curseList.length - 1,
+    Display: (): string => {
+      return `Force A Curse: ${curseNames.get(v.curse)}`;
+    },
+    OnChange: (currentNum: number | boolean | undefined): void => {
+      v.curse = v.curseList[currentNum as number];
+    },
+    Info: [
+      "Caution: Setting this to anything besides None will increase load times.",
+    ],
+  });
   addSetting(RoomType.ROOM_TREASURE, "Treasure Rooms", "");
   if (REPENTANCE === true) {
     addSetting(
@@ -87,7 +123,8 @@ if (ModConfigMenu !== undefined) {
   );
 
   // Tweaks tab
-  const newSetting: ModConfigMenuSetting = {
+  ModConfigMenu.AddSetting("TR Start", "Tweaks", {
+    Type: ModConfigMenuOptionType.BOOLEAN,
     CurrentSetting: (): boolean => {
       return v.isEdenEnabled;
     },
@@ -98,9 +135,6 @@ if (ModConfigMenu !== undefined) {
       }
       return `Eden Support: ${onOff}`;
     },
-    Info: [
-      "Caution: May consume extra Eden tokens. Only enable Eden support if you are okay with that!",
-    ],
     OnChange: (): void => {
       if (v.isEdenEnabled) {
         v.isEdenEnabled = false;
@@ -108,9 +142,8 @@ if (ModConfigMenu !== undefined) {
         v.isEdenEnabled = true;
       }
     },
-    Type: ModConfigMenuOptionType.BOOLEAN,
-  };
-  if (ModConfigMenu !== undefined) {
-    ModConfigMenu.AddSetting("TR Start", "Tweaks", newSetting);
-  }
+    Info: [
+      "Caution: May consume extra Eden tokens. Only enable if you are okay with that!",
+    ],
+  });
 }

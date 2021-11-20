@@ -42,7 +42,7 @@ function conditionsMet(): boolean {
   if (isGreedMode()) {
     return false;
   }
-  if (v.rooms.size === 0) {
+  if (v.rooms.size === 0 && v.curse === LevelCurse.CURSE_NONE) {
     return false;
   }
   return true;
@@ -51,6 +51,9 @@ function conditionsMet(): boolean {
 // Calls handleReseed if appropriate when a new run is started
 function postGameStarted(isContinued: boolean) {
   if (!isContinued) {
+    if (!v.settingsLoaded) {
+      loadSettings();
+    }
     if (conditionsMet()) {
       handleReseed();
     }
@@ -63,6 +66,17 @@ function handleReseed() {
   const level = game.GetLevel();
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    if (v.curse !== LevelCurse.CURSE_NONE) {
+      const curses = level.GetCurses();
+      const isCurseActive = (curses & v.curse) !== 0;
+      if (!isCurseActive) {
+        Isaac.ExecuteCommand("reseed");
+        continue;
+      }
+      if (v.rooms.size === 0) {
+        return;
+      }
+    }
     for (const i of v.roomIndices) {
       const roomDescriptor = level.GetRoomByIdx(i);
       const room = roomDescriptor.Data;
@@ -84,6 +98,8 @@ function loadSettings() {
     const deserialized = jsonDecode(serialized);
     const savedVersion = deserialized.get("version") as string;
     if (savedVersion === v.version) {
+      const curse = deserialized.get("curse") as LevelCurse;
+      v.curse = curse;
       const rooms = deserialized.get("rooms") as RoomType[];
       v.rooms.clear();
       for (const room of rooms) {
@@ -91,6 +107,7 @@ function loadSettings() {
       }
     }
   }
+  v.settingsLoaded = true;
 }
 
 // Encode and save current mod settings
@@ -101,6 +118,7 @@ function saveSettings() {
     enabledRooms.push(room);
   }
   const toSave = {
+    curse: v.curse,
     rooms: enabledRooms,
     version: v.version,
   };
