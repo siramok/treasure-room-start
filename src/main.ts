@@ -5,6 +5,7 @@ import { v } from "./config";
 // Register the mod
 const mod = RegisterMod("Treasure Room Start", 1);
 
+// Register callbacks
 export default function main(): void {
   // Main callback
   mod.AddCallback(ModCallbacks.MC_POST_GAME_STARTED, postGameStarted);
@@ -26,7 +27,7 @@ function isEden(player: EntityPlayer): boolean {
   );
 }
 
-// Validates that the mod's prerequisites are met before proceeding
+// Validate that the prerequisites for execution are met
 function conditionsMet(): boolean {
   const player = Isaac.GetPlayer(0);
   if (player === undefined) {
@@ -49,8 +50,10 @@ function conditionsMet(): boolean {
 
 // Calls handleReseed if appropriate when a new run is started
 function postGameStarted(isContinued: boolean) {
-  if (!isContinued && conditionsMet()) {
-    handleReseed();
+  if (!isContinued) {
+    if (conditionsMet()) {
+      handleReseed();
+    }
   }
 }
 
