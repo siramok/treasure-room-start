@@ -107,6 +107,8 @@ function loadSettings() {
     if (savedVersion === v.version) {
       const curse = deserialized.get("curse") as LevelCurse;
       v.curse = curse;
+      const isEdenEnabled = deserialized.get("isEdenEnabled") as boolean;
+      v.isEdenEnabled = isEdenEnabled;
       const reseedLimit = deserialized.get("reseedLimit") as int;
       v.reseedLimit = reseedLimit;
       const rooms = deserialized.get("rooms") as RoomType[];
@@ -128,6 +130,7 @@ function saveSettings() {
   }
   const toSave = {
     curse: v.curse,
+    isEdenEnabled: v.isEdenEnabled,
     reseedLimit: v.reseedLimit,
     rooms: enabledRooms,
     version: v.version,
