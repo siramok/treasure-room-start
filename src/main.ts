@@ -1,5 +1,5 @@
 import { jsonDecode, jsonEncode } from "isaacscript-common/dist/functions/json";
-import { isGreedMode, onSetSeed } from "isaacscript-common/dist/functions/util";
+import { isGreedMode } from "isaacscript-common/dist/functions/util";
 import { v } from "./config";
 
 // Register the mod
@@ -36,7 +36,9 @@ function conditionsMet(): boolean {
   if (isEden(player) && !v.isEdenEnabled) {
     return false;
   }
-  if (onSetSeed()) {
+  const game = Game();
+  const seeds = game.GetSeeds();
+  if (seeds.IsCustomRun()) {
     return false;
   }
   if (isGreedMode()) {
