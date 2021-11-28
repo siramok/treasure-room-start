@@ -15,7 +15,7 @@ export const v = {
   roomIndices: [71, 83, 85, 97],
   rooms: new Set<RoomType>(),
   settingsLoaded: false,
-  version: "1.9",
+  version: "1.10",
 };
 
 // Apply default config
