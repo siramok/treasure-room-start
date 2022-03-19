@@ -1,5 +1,5 @@
+import { game } from "isaacscript-common/dist/cachedClasses";
 import { jsonDecode, jsonEncode } from "isaacscript-common/dist/functions/json";
-import { isGreedMode } from "isaacscript-common/dist/functions/util";
 import { v } from "./config";
 
 // Register the mod
@@ -20,11 +20,7 @@ export default function main(): void {
 // Helper function for detecting if the player is Eden or Tainted Eden
 function isEden(player: EntityPlayer): boolean {
   const character = player.GetPlayerType();
-
-  return (
-    character === PlayerType.PLAYER_EDEN ||
-    character === PlayerType.PLAYER_EDEN_B
-  );
+  return character === PlayerType.PLAYER_EDEN || character === PlayerType.PLAYER_EDEN_B;
 }
 
 // Validate that the prerequisites for execution are met
@@ -36,12 +32,11 @@ function conditionsMet(): boolean {
   if (isEden(player) && !v.isEdenEnabled) {
     return false;
   }
-  const game = Game();
   const seeds = game.GetSeeds();
   if (seeds.IsCustomRun()) {
     return false;
   }
-  if (isGreedMode()) {
+  if (game.IsGreedMode()) {
     return false;
   }
   if (v.rooms.size === 0 && v.curse === LevelCurse.CURSE_NONE) {
@@ -64,7 +59,6 @@ function postGameStarted(isContinued: boolean) {
 
 // Reseeds the current run until the player starts next to a desired room
 function handleReseed() {
-  const game = Game();
   const level = game.GetLevel();
   let limit = v.reseedLimit;
   if (limit === 0) {

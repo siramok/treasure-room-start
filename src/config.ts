@@ -31,9 +31,7 @@ function addSetting(key: number, description: string, info: string) {
   if (ModConfigMenu !== undefined) {
     ModConfigMenu.AddSetting("TR Start", "General", {
       Type: ModConfigMenuOptionType.BOOLEAN,
-      CurrentSetting: (): boolean => {
-        return v.rooms.has(key);
-      },
+      CurrentSetting: (): boolean => v.rooms.has(key),
       Display: (): string => {
         let onOff = "Disabled";
         if (v.rooms.has(key)) {
@@ -57,17 +55,11 @@ function addSetting(key: number, description: string, info: string) {
 if (ModConfigMenu !== undefined) {
   // About tab
   ModConfigMenu.AddSpace("TR Start", "About");
-  ModConfigMenu.AddText("TR Start", "About", () => {
-    return "Treasure Room Start";
-  });
+  ModConfigMenu.AddText("TR Start", "About", () => "Treasure Room Start");
   ModConfigMenu.AddSpace("TR Start", "About");
-  ModConfigMenu.AddText("TR Start", "About", () => {
-    return `Version ${v.version}`;
-  });
+  ModConfigMenu.AddText("TR Start", "About", () => `Version ${v.version}`);
   ModConfigMenu.AddSpace("TR Start", "About");
-  ModConfigMenu.AddText("TR Start", "About", () => {
-    return "by Siramok";
-  });
+  ModConfigMenu.AddText("TR Start", "About", () => "by Siramok");
 
   // General tab
   const curseNames = new Map<LevelCurse, string>([
@@ -81,14 +73,10 @@ if (ModConfigMenu !== undefined) {
   ]);
   ModConfigMenu.AddSetting("TR Start", "General", {
     Type: ModConfigMenuOptionType.NUMBER,
-    CurrentSetting: (): number => {
-      return v.curseList.indexOf(v.curse);
-    },
+    CurrentSetting: (): number => v.curseList.indexOf(v.curse),
     Minimum: 0,
     Maximum: v.curseList.length - 1,
-    Display: (): string => {
-      return `Force A Curse: ${curseNames.get(v.curse)}`;
-    },
+    Display: (): string => `Force A Curse: ${curseNames.get(v.curse)}`,
     OnChange: (currentNum: number | boolean | undefined): void => {
       v.curse = v.curseList[currentNum as number];
     },
@@ -129,9 +117,7 @@ if (ModConfigMenu !== undefined) {
     Minimum: 0,
     Maximum: 3000,
     ModifyBy: 100,
-    CurrentSetting: (): number => {
-      return v.reseedLimit;
-    },
+    CurrentSetting: (): number => v.reseedLimit,
     Display: (): string => {
       if (v.reseedLimit === 0) {
         return "Reseed Limit: None";
@@ -145,9 +131,7 @@ if (ModConfigMenu !== undefined) {
   });
   ModConfigMenu.AddSetting("TR Start", "Tweaks", {
     Type: ModConfigMenuOptionType.BOOLEAN,
-    CurrentSetting: (): boolean => {
-      return v.isEdenEnabled;
-    },
+    CurrentSetting: (): boolean => v.isEdenEnabled,
     Display: (): string => {
       let onOff = "Disabled";
       if (v.isEdenEnabled) {
