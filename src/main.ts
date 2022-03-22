@@ -1,12 +1,13 @@
 import { game } from "isaacscript-common/dist/cachedClasses";
 import { jsonDecode, jsonEncode } from "isaacscript-common/dist/functions/json";
+import { isEden } from "isaacscript-common/dist/functions/player";
 import { v } from "./config";
 
 // Register the mod
 const mod = RegisterMod("Treasure Room Start", 1);
 
 // Register callbacks
-export default function main(): void {
+export function main(): void {
   // Main callback
   mod.AddCallback(ModCallbacks.MC_POST_GAME_STARTED, postGameStarted);
 
@@ -15,12 +16,6 @@ export default function main(): void {
     mod.AddCallback(ModCallbacks.MC_POST_GAME_STARTED, loadSettings);
     mod.AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, saveSettings);
   }
-}
-
-// Helper function for detecting if the player is Eden or Tainted Eden
-function isEden(player: EntityPlayer): boolean {
-  const character = player.GetPlayerType();
-  return character === PlayerType.PLAYER_EDEN || character === PlayerType.PLAYER_EDEN_B;
 }
 
 // Validate that the prerequisites for execution are met
