@@ -14,7 +14,4 @@ This mod automatically reseeds runs until you start next to a desired room: trea
 Head to the mod's [Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301) and click the green subscribe button. Steam will automatically download, install, and keep the mod up to date for you.
 
 # Configuration
-It is highly recommended that you also subscribe to [Mod Config Menu - Continued](https://steamcommunity.com/sharedfiles/filedetails/?id=2487535818) to configure the mod's settings.
-
-# Support Development
-If you enjoy the mod and want to give something back, [consider buying me a coffee.](https://paypal.me/andressewell)
+It is highly recommended that you also subscribe to [Mod Config Menu Pure](https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787) to configure the mod's settings.
