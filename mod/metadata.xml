@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-model href="https://wofsauge.github.io/isaac-xml-validator/xsd/metadata.xsd" ?>
+<metadata>
+  <name>Treasure Room Start</name>
+  <directory>treasure room start</directory>
+  <id>2560433301</id>
+  <description>This mod will automatically restart new runs until you start next to a desired room type or floor curse. Treasure rooms and planetariums are the room types enabled by default, but other room types can be enabled using Mod Config Menu. Treasure Room Start was created using the [url=isaacscript.github.io] IsaacScript framework [/url], its source code can be [url=github.com/siramok/treasure-room-start] found on Github [/url] for those interested.
+
+[h1]Features[/h1]
+[list]
+[*] Automatically start new runs next to particular room types (treasure and planetarium rooms enabled by default).
+[*] Automatically start new runs with particular floor curses (all enabled by default, like the vanilla game).
+[*] Preserves your run streak.
+[*] Also works when manually holding R to restart runs, or when victory lapping.
+[*] Compatibility with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787] Beyond [/url] modded characters.
+[/list]
+
+[h1]Configuration[/h1]
+I recommended that you subscribe to [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787] Mod Config Menu Pure [/url] to configure this mod's settings.</description>
+  <version>1.13</version>
+  <visibility>Public</visibility>
+</metadata>

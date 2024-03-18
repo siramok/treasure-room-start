@@ -1,17 +1,24 @@
-# Treasure Room Start <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-steam-workshop.jross.me%2F2560433301%2Fsubscriptions-text&style=for-the-badge" alt="Steam Workshop downloads"></a> ![Build Status](https://github.com/siramok/treasure-room-start/actions/workflows/ci.yml/badge.svg)
-Treasure Room Start is a mod for *[The Binding of Isaac: Rebirth](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301)*, written in [TypeScript](https://typescriptlang.org) using the [IsaacScript](https://isaacscript.github.io) framework.
+# trs-mod
 
-This mod automatically reseeds runs until you start next to a desired room: treasure and planetarium rooms enabled by default. Useful as a quality of life tool, but it can also be used to find specific seeds for research purposes.
-# Features
-* Automatically start runs next to desired room types.
-* Force specific curses to be active when starting runs.
-* Preserves your run streak.
-* Support for manually holding R to restart runs.
-* Safeguards to prevent soft-locking, including a configurable reseed limiter.
-* Optional support for Eden and Tainted Eden to avoid consuming extra Eden tokens.
+trs-mod is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
 
-# Installation
-Head to the mod's [Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301) and click the green subscribe button. Steam will automatically download, install, and keep the mod up to date for you.
+## How To Play
 
-# Configuration
-It is highly recommended that you also subscribe to [Mod Config Menu Pure](https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787) to configure the mod's settings.
+For normal people, you can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/app/250900/workshop/). (Subscribing to the mod will automatically download and install it once you launch the game.)
+
+## How To Compile
+
+If you are a developer, or if the mod is not yet uploaded to the Steam Workshop, you can play the mod by compiling the TypeScript code into a "main.lua" file. Perform the following steps:
+
+- Download and install [Node.js](https://nodejs.org/en/download/) (Windows Installer .msi, 64-bit).
+- Download and install [Git](https://git-scm.com/download/win) (64-bit Git for Windows setup).
+- Download (or clone) this repository:
+  - Click on the "Code" button in the top-right-corner of this page.
+  - Click on "Download ZIP".
+- Unzip the zip file to a new directory.
+- Open the command prompt (or another shell of your choice).
+- Use the `cd` command to navigate to the place where you unzipped the repository.
+- Use the `pnpm install --frozen-lockfile` command to install the project dependencies.
+- Use the `npx isaacscript` command to start the IsaacScript watcher.
+- If IsaacScript is successful, you will see "Compilation successful." (You can continue to leave the terminal window open; it will monitor for changes in your project, and recompile if necessary.)
+- Completely close Isaac if it is already open, and then open the game again, and the mod should be in the list of mods. You can now play or test the mod.

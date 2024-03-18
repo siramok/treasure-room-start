@@ -3,50 +3,47 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build_and_lint:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/setup
+      - run: npm run build
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          # The default version is 14
-          # The ESLint config requires Node 16 to work properly
-          node-version: '16'
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/setup
+      - run: npm run lint
 
-      - name: Retrieve the cached "node_modules" directory (if present)
-        uses: actions/cache@v2
-        id: node-cache
-        with:
-          path: node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-
-      - name: Install dependencies (if the cached directory was not found)
-        if: steps.node-cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - name: Install xmllint (which the "lint.sh" script uses)
-        run: sudo apt-get update && sudo apt-get install libxml2-utils -y
-
-      - name: Test to see if the project compiles
-        run: bash build.sh
-
-      - name: Perform automated checks
-        run: bash lint.sh
-
-  # To enable CI failure notifications over Discord, add a "DISCORD_WEBHOOK" secret to the
-  # repository equal to the URL for the webhook, and then uncomment the lines below
-
+  # To enable CI failure notifications over Discord:
+  # - Right click on a channel in Discord and select "Edit Channel".
+  # - Click on "Integrations" on the left menu.
+  # - Click on the "Create Webhook" button.
+  # - Click on the box for the new webhook that was created.
+  # - Change the name to "GitHub".
+  # - Change the image to: https://github.com/IsaacScript/isaacscript/raw/main/misc/github.png
+  # - Click on the "Save Changes" button at the bottom.
+  # - Click on the "Copy Webhook URL" button.
+  # - Go to the main page for your repository on GitHub.
+  # - Click on the "Settings" tab near the top.
+  # - Click on "Secrets and variables" in the left menu.
+  # - Click on "Actions" from the dropdown list.
+  # - Click on the "New repository secret" button in the top right.
+  # - For the "Name" box, use "DISCORD_WEBHOOK" (without the quotes).
+  # - For the "Secret" box, paste in the URL that was copied in the "Copy Webhook URL" step. (The
+  #   pasted URL should not have a "/github" suffix.)
+  # - Click on the "Add secret" button.
+  # - Delete this comment and uncomment the lines below.
   #discord:
   #  name: Discord Failure Notification
-  #  needs: [build_and_lint]
-  #  if: always() # This is needed to always run this job, even if the other jobs fail
+  #  needs: [build, lint]
+  #  if: always() # This is needed to always run this job, even if the other jobs fail.
   #  runs-on: ubuntu-latest
   #  steps:
-  #    - uses: technote-space/workflow-conclusion-action@v2
-  #    - if: ${{ secrets.DISCORD_WEBHOOK }} != '' && env.WORKFLOW_CONCLUSION != 'success' && env.WORKFLOW_CONCLUSION != 'cancelled'
+  #    - uses: technote-space/workflow-conclusion-action@v3
+  #    - if: env.WORKFLOW_CONCLUSION != 'success' && env.WORKFLOW_CONCLUSION != 'cancelled'
   #      uses: sarisia/actions-status-discord@v1
   #      with:
   #        webhook: ${{ secrets.DISCORD_WEBHOOK }}

@@ -1,7 +1,7 @@
 {
-  "name": "base",
-  "version": "0.0.1",
-  "description": "A mod for The Binding of Isaac: Repentance",
+  "name": "trs-mod",
+  "version": "1.13.0",
+  "description": "A mod for The Binding of Isaac: Repentance.",
   "keywords": [
     "isaac",
     "mod",
@@ -10,10 +10,27 @@
     "repentance"
   ],
   "license": "GPL-3.0",
+  "type": "module",
+  "scripts": {
+    "build": "tstl",
+    "lint": "tsx ./scripts/lint.ts",
+    "nuke": "isaacscript nuke",
+    "publish": "isaacscript publish",
+    "start": "isaacscript monitor",
+    "update": "isaacscript update"
+  },
   "dependencies": {
-    "isaac-typescript-definitions": "^1.0.376",
-    "isaacscript": "^1.2.27",
-    "isaacscript-common": "^1.2.195",
-    "isaacscript-lint": "^1.0.93"
+    "isaac-typescript-definitions": "^41.0.0",
+    "isaacscript-common": "^87.2.2"
+  },
+  "devDependencies": {
+    "isaacscript": "^3.39.0",
+    "isaacscript-common-node": "^3.0.0",
+    "isaacscript-lint": "^6.19.0",
+    "isaacscript-spell": "^1.14.0",
+    "isaacscript-tsconfig": "^5.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3",
+    "typescript-to-lua": "^1.23.0"
   }
 }
