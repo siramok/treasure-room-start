@@ -1,6 +1,6 @@
 # Treasure Room Start <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-steam-workshop.jross.me%2F2560433301%2Fsubscriptions-text&style=for-the-badge" alt="Steam Workshop downloads"></a> ![Build Status](https://github.com/siramok/treasure-room-start/actions/workflows/ci.yml/badge.svg)
 
-Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework. It will automatically restart new runs until you start next to a desired room type or floor curse.
+Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework. It will automatically restart new runs until you start next to a desired room type or with a desired floor curse.
 
 ## Features
 
@@ -12,7 +12,7 @@ Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://st
 
 ## How To Play
 
-You can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301). (Subscribing to the mod will automatically download and install it once you launch the game.)
+As of the latest update, this mod requires that you own the [Repentance DLC](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/). You can play by subscribing to this mod on [the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301). (Subscribing to the mod will automatically download and install it once you launch the game.)
 
 ## How To Compile
 

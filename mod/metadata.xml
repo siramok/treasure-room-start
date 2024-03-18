@@ -4,7 +4,7 @@
   <name>Treasure Room Start</name>
   <directory>treasure room start</directory>
   <id>2560433301</id>
-  <description>This mod will automatically restart new runs until you start next to a desired room type or floor curse. Treasure rooms and planetariums are the room types enabled by default, but other room types can be enabled using Mod Config Menu. Treasure Room Start was created using the [url=isaacscript.github.io] IsaacScript framework [/url], its source code can be [url=github.com/siramok/treasure-room-start] found on Github [/url] for those interested.
+  <description>This mod will automatically restart new runs until you start next to a desired room type or with a desired floor curse. Treasure rooms and planetariums are the room types enabled by default, but other room types can be enabled using Mod Config Menu. Treasure Room Start was created using the [url=isaacscript.github.io] IsaacScript framework [/url], its source code can be [url=github.com/siramok/treasure-room-start] found on Github [/url] for those interested.
 
 [h1]Features[/h1]
 [list]
