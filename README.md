@@ -1,6 +1,14 @@
 # Treasure Room Start <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-steam-workshop.jross.me%2F2560433301%2Fsubscriptions-text&style=for-the-badge" alt="Steam Workshop downloads"></a> ![Build Status](https://github.com/siramok/treasure-room-start/actions/workflows/ci.yml/badge.svg)
 
-Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework. It will automatically restart new runs until you start next to a desired room type or floor curse.
+
+## Features
+
+- Automatically start new runs next to particular room types (treasure and planetarium rooms enabled by default).
+- Automatically start new runs with particular floor curses (all enabled by default, like the vanilla game).
+- Preserves your run streak.
+- Also works when manually holding R to restart runs, or when victory lapping.
+- Compatibility with [Beyond](url=https://steamcommunity.com/sharedfiles/filedetails/?id=2681875787) modded characters.
 
 ## How To Play
 
