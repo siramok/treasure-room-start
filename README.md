@@ -1,14 +1,14 @@
-# trs-mod
+# Treasure Room Start <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301"><img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-steam-workshop.jross.me%2F2560433301%2Fsubscriptions-text&style=for-the-badge" alt="Steam Workshop downloads"></a> ![Build Status](https://github.com/siramok/treasure-room-start/actions/workflows/ci.yml/badge.svg)
 
-trs-mod is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+Treasure Room Start is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/), written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
 
 ## How To Play
 
-For normal people, you can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/app/250900/workshop/). (Subscribing to the mod will automatically download and install it once you launch the game.)
+You can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2560433301). (Subscribing to the mod will automatically download and install it once you launch the game.)
 
 ## How To Compile
 
-If you are a developer, or if the mod is not yet uploaded to the Steam Workshop, you can play the mod by compiling the TypeScript code into a "main.lua" file. Perform the following steps:
+If you are a developer and want to build the mod yourself, perform the following steps:
 
 - Download and install [Node.js](https://nodejs.org/en/download/) (Windows Installer .msi, 64-bit).
 - Download and install [Git](https://git-scm.com/download/win) (64-bit Git for Windows setup).
