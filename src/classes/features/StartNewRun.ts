@@ -241,7 +241,7 @@ export class StartNewRun extends ModFeature {
 
     // If the user didn't enable any curse types in particular, enable all of them since that's the
     // game's default behavior.
-    if (enabledCurseTypes.size > 0) {
+    if (enabledCurseTypes.size === 0) {
       enabledCurseTypes.add(LevelCurse.BLIND);
       enabledCurseTypes.add(LevelCurse.DARKNESS);
       enabledCurseTypes.add(LevelCurse.LABYRINTH);
