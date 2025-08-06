@@ -100,41 +100,51 @@ export class StartNewRun extends ModFeature {
       return;
     }
 
-    // 1000 iterations seems like a good sweet spot.
-    const reseedLimit = 1000;
+    // 1500 iterations seems like a good sweet spot.
+    const reseedLimit = 1500;
     // These are always the adjacent room IDs.
     const adjacentRoomIndices: readonly int[] = [71, 83, 85, 97];
     const level = game.GetLevel();
 
     // Only search a finite number of times to avoid crashing the game.
     for (let reseedIter = 0; reseedIter < reseedLimit; reseedIter++) {
-      const cursed = hasCurse(...enabledCurseTypes);
+      // Check for any curses when curses are disabled, or specific curses when enabled
+      const cursed = config.enableLevelCurses
+        ? hasCurse(...enabledCurseTypes)
+        : hasCurse(LevelCurse.BLIND, LevelCurse.DARKNESS, LevelCurse.LABYRINTH, LevelCurse.LOST, LevelCurse.MAZE, LevelCurse.UNKNOWN);
 
-      // Reseed if we are cursed but the user disabled starting curses.
-      if (!config.enableLevelCurses && cursed) {
-        Isaac.ExecuteCommand("reseed");
-        continue;
-      }
-
-      // Handle curse types.
-      if (!noCurseTypesEnabled) {
-        // Reseed until we start with an enabled curse.
+      // Handle curse logic first
+      if (!config.enableLevelCurses) {
+        // If curses are disabled, reseed until we have no curses
+        if (cursed) {
+          Isaac.ExecuteCommand("reseed");
+          continue;
+        }
+      } else if (!noCurseTypesEnabled) {
+        // If curses are enabled and specific curse types are enabled, reseed until we have a desired curse
         if (!cursed) {
           Isaac.ExecuteCommand("reseed");
           continue;
         }
+      }
 
-        // The user might want to start with a curse, but not next to a particular room type.
-        if (noRoomTypesEnabled) {
-          const stopTime = getTime();
+      // Check room types - if no room types are enabled, we're done (curse requirement met)
+      if (noRoomTypesEnabled) {
+        const stopTime = getTime();
+        if (!config.enableLevelCurses) {
+          print(
+            `${LOG_HEADER} spawned without curses after ${reseedIter}/${reseedLimit} reseeds and ${stopTime - startTime} ms`,
+          );
+        } else {
           print(
             `${LOG_HEADER} spawned with an enabled curse type after ${reseedIter}/${reseedLimit} reseeds and ${stopTime - startTime} ms`,
           );
-          return;
         }
+        return;
       }
 
-      // Iterate over the adjacent rooms to the starting room.
+      // Check if we have at least one enabled room type adjacent to spawn
+      let foundDesiredRoom = false;
       for (const roomGridIndex of adjacentRoomIndices) {
         const roomDescriptor = level.GetRoomByIdx(roomGridIndex);
         const roomData = roomDescriptor.Data;
@@ -143,13 +153,21 @@ export class StartNewRun extends ModFeature {
           continue;
         }
         if (isRoomType(roomData, ...enabledRoomTypes)) {
-          const stopTime = getTime();
-          print(
-            `${LOG_HEADER} spawned adjacent to an enabled room type after ${reseedIter}/${reseedLimit} reseeds and ${stopTime - startTime} ms`,
-          );
-          return;
+          foundDesiredRoom = true;
+          break;
         }
       }
+
+      // If we found a desired room and curse requirements are met, we're done
+      if (foundDesiredRoom) {
+        const stopTime = getTime();
+        print(
+          `${LOG_HEADER} spawned adjacent to an enabled room type after ${reseedIter}/${reseedLimit} reseeds and ${stopTime - startTime} ms`,
+        );
+        return;
+      }
+
+      // If we didn't find desired room types, reseed and try again
       Isaac.ExecuteCommand("reseed");
     }
 
@@ -215,6 +233,11 @@ export class StartNewRun extends ModFeature {
   getEnabledCurseTypes(): Set<LevelCurse> {
     const enabledCurseTypes = new Set<LevelCurse>();
 
+    // If curses are disabled entirely, return empty set
+    if (!config.enableLevelCurses) {
+      return enabledCurseTypes;
+    }
+
     if (config.enableLevelCurseBlind) {
       enabledCurseTypes.add(LevelCurse.BLIND);
     }
@@ -239,8 +262,8 @@ export class StartNewRun extends ModFeature {
       enabledCurseTypes.add(LevelCurse.UNKNOWN);
     }
 
-    // If the user didn't enable any curse types in particular, enable all of them since that's the
-    // game's default behavior.
+    // If the user enabled curses but didn't enable any specific curse types, enable all of them
+    // since that's the game's default behavior.
     if (enabledCurseTypes.size === 0) {
       enabledCurseTypes.add(LevelCurse.BLIND);
       enabledCurseTypes.add(LevelCurse.DARKNESS);
