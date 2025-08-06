@@ -14,20 +14,38 @@ import { LOG_HEADER } from "../../constants";
 import { config } from "../../modConfigMenu";
 
 export class StartNewRun extends ModFeature {
-  hasEnabledCurseTypes = false;
-
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const startTime = getTime();
+
+    // Cache frequently accessed config values
+    const enableLevelCurses = config.enableLevelCurses;
+    const enableModdedCharacters = config.enableModdedCharacters;
 
     const player = Isaac.GetPlayer();
     const character = player.GetPlayerType();
 
     // If the user has disabled support for modded characters but is playing a modded character,
     // exit early.
-    if (!config.enableModdedCharacters && isModdedCharacter(character)) {
+    if (!enableModdedCharacters && isModdedCharacter(character)) {
       print(
         `${LOG_HEADER} exiting early, user has disabled support for modded characters.`,
+      );
+      return;
+    }
+
+    // Early exits for unsupported game modes
+    if (game.IsGreedMode()) {
+      print(
+        `${LOG_HEADER} exiting early, this mod does not support greed mode.`,
+      );
+      return;
+    }
+
+    const seeds = game.GetSeeds();
+    if (seeds.IsCustomRun()) {
+      print(
+        `${LOG_HEADER} exiting early, this mod does not support custom runs.`,
       );
       return;
     }
@@ -83,38 +101,26 @@ export class StartNewRun extends ModFeature {
       return;
     }
 
-    // The mod doesn't make sense for greed mode, exit early.
-    if (game.IsGreedMode()) {
-      print(
-        `${LOG_HEADER} exiting early, this mod does not support greed mode.`,
-      );
-      return;
-    }
-
-    // We don't want to reseed the run if the user manually entered a seed, exit early.
-    const seeds = game.GetSeeds();
-    if (seeds.IsCustomRun()) {
-      print(
-        `${LOG_HEADER} exiting early, this mod does not support custom runs.`,
-      );
-      return;
-    }
-
     // 1500 iterations seems like a good sweet spot.
     const reseedLimit = 1500;
     // These are always the adjacent room IDs.
     const adjacentRoomIndices: readonly int[] = [71, 83, 85, 97];
     const level = game.GetLevel();
 
+    // Convert enabledRoomTypes to array for faster iteration
+    const enabledRoomTypesArray = Array.from(enabledRoomTypes);
+
+    // Pre-compute curse checking parameters for performance
+    const allCurses = [LevelCurse.BLIND, LevelCurse.DARKNESS, LevelCurse.LABYRINTH, LevelCurse.LOST, LevelCurse.MAZE, LevelCurse.UNKNOWN] as const;
+    const cursesToCheck = enableLevelCurses ? enabledCurseTypes : allCurses;
+
     // Only search a finite number of times to avoid crashing the game.
     for (let reseedIter = 0; reseedIter < reseedLimit; reseedIter++) {
-      // Check for any curses when curses are disabled, or specific curses when enabled
-      const cursed = config.enableLevelCurses
-        ? hasCurse(...enabledCurseTypes)
-        : hasCurse(LevelCurse.BLIND, LevelCurse.DARKNESS, LevelCurse.LABYRINTH, LevelCurse.LOST, LevelCurse.MAZE, LevelCurse.UNKNOWN);
+      // Check for curses using pre-computed parameters
+      const cursed = hasCurse(...cursesToCheck);
 
       // Handle curse logic first
-      if (!config.enableLevelCurses) {
+      if (!enableLevelCurses) {
         // If curses are disabled, reseed until we have no curses
         if (cursed) {
           Isaac.ExecuteCommand("reseed");
@@ -131,7 +137,7 @@ export class StartNewRun extends ModFeature {
       // Check room types - if no room types are enabled, we're done (curse requirement met)
       if (noRoomTypesEnabled) {
         const stopTime = getTime();
-        if (!config.enableLevelCurses) {
+        if (!enableLevelCurses) {
           print(
             `${LOG_HEADER} spawned without curses after ${reseedIter}/${reseedLimit} reseeds and ${stopTime - startTime} ms`,
           );
@@ -152,7 +158,7 @@ export class StartNewRun extends ModFeature {
           // Not sure if it's possible to have this case.
           continue;
         }
-        if (isRoomType(roomData, ...enabledRoomTypes)) {
+        if (isRoomType(roomData, ...enabledRoomTypesArray)) {
           foundDesiredRoom = true;
           break;
         }
@@ -231,12 +237,12 @@ export class StartNewRun extends ModFeature {
 
   // Returns a set of enabled LevelCurses.
   getEnabledCurseTypes(): Set<LevelCurse> {
-    const enabledCurseTypes = new Set<LevelCurse>();
-
     // If curses are disabled entirely, return empty set
     if (!config.enableLevelCurses) {
-      return enabledCurseTypes;
+      return new Set<LevelCurse>();
     }
+
+    const enabledCurseTypes = new Set<LevelCurse>();
 
     if (config.enableLevelCurseBlind) {
       enabledCurseTypes.add(LevelCurse.BLIND);
@@ -265,12 +271,14 @@ export class StartNewRun extends ModFeature {
     // If the user enabled curses but didn't enable any specific curse types, enable all of them
     // since that's the game's default behavior.
     if (enabledCurseTypes.size === 0) {
-      enabledCurseTypes.add(LevelCurse.BLIND);
-      enabledCurseTypes.add(LevelCurse.DARKNESS);
-      enabledCurseTypes.add(LevelCurse.LABYRINTH);
-      enabledCurseTypes.add(LevelCurse.LOST);
-      enabledCurseTypes.add(LevelCurse.MAZE);
-      enabledCurseTypes.add(LevelCurse.UNKNOWN);
+      return new Set([
+        LevelCurse.BLIND,
+        LevelCurse.DARKNESS,
+        LevelCurse.LABYRINTH,
+        LevelCurse.LOST,
+        LevelCurse.MAZE,
+        LevelCurse.UNKNOWN,
+      ]);
     }
 
     return enabledCurseTypes;
