@@ -14,6 +14,11 @@ import { LOG_HEADER } from "../../constants";
 import { config } from "../../modConfigMenu";
 
 export class StartNewRun extends ModFeature {
+  // Cache Beyond mod character IDs for performance
+  private readonly sinCharacterId = BeyondMod !== undefined ? Isaac.GetPlayerTypeByName("Sin", false) : -1;
+  private readonly atonedCharacterId = BeyondMod !== undefined ? Isaac.GetPlayerTypeByName("Sin", true) : -1;
+  private readonly huskCharacterId = BeyondMod !== undefined ? Isaac.GetPlayerTypeByName("The Rotten", true) : -1;
+
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const startTime = getTime();
@@ -56,7 +61,7 @@ export class StartNewRun extends ModFeature {
     // Handle Beyond mod custom characters.
     if (BeyondMod !== undefined) {
       // Sin replaces treasure rooms with devil rooms, so we search for those instead.
-      if (character === Isaac.GetPlayerTypeByName("Sin", false)) {
+      if (character === this.sinCharacterId) {
         print(
           `${LOG_HEADER} playing as "Sin" from the Beyond mod. Searching for ${getRoomTypeName(RoomType.DEVIL)}s instead of ${getRoomTypeName(RoomType.TREASURE)}s.`,
         );
@@ -68,7 +73,7 @@ export class StartNewRun extends ModFeature {
       }
 
       // The Atoned replaces treasure rooms with angel rooms, so we search for those instead.
-      if (character === Isaac.GetPlayerTypeByName("Sin", true)) {
+      if (character === this.atonedCharacterId) {
         print(
           `${LOG_HEADER} playing as "The Atoned" from the Beyond mod. Searching for ${getRoomTypeName(RoomType.ANGEL)}s instead of ${getRoomTypeName(RoomType.TREASURE)}s.`,
         );
@@ -80,7 +85,7 @@ export class StartNewRun extends ModFeature {
       }
 
       // The Husk replaces treasure rooms with a custom room type, so we won't search for them.
-      if (character === Isaac.GetPlayerTypeByName("The Rotten", true)) {
+      if (character === this.huskCharacterId) {
         print(
           `${LOG_HEADER} playing as "The Husk" from the Beyond mod. Won't search for ${getRoomTypeName(RoomType.TREASURE)}s, ${getRoomTypeName(RoomType.PLANETARIUM)}s, or ${getRoomTypeName(RoomType.SHOP)}s since this character replaces them.`,
         );
@@ -101,8 +106,8 @@ export class StartNewRun extends ModFeature {
       return;
     }
 
-    // 1500 iterations seems like a good sweet spot.
-    const reseedLimit = 1500;
+    // 1000 iterations seems like a good sweet spot.
+    const reseedLimit = 1000;
     // These are always the adjacent room IDs.
     const adjacentRoomIndices: readonly int[] = [71, 83, 85, 97];
     const level = game.GetLevel();
