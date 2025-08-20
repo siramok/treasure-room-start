@@ -273,19 +273,6 @@ export class StartNewRun extends ModFeature {
       enabledCurseTypes.add(LevelCurse.UNKNOWN);
     }
 
-    // If the user enabled curses but didn't enable any specific curse types, enable all of them
-    // since that's the game's default behavior.
-    if (enabledCurseTypes.size === 0) {
-      return new Set([
-        LevelCurse.BLIND,
-        LevelCurse.DARKNESS,
-        LevelCurse.LABYRINTH,
-        LevelCurse.LOST,
-        LevelCurse.MAZE,
-        LevelCurse.UNKNOWN,
-      ]);
-    }
-
     return enabledCurseTypes;
   }
 }

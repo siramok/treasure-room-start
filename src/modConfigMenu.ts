@@ -144,7 +144,7 @@ const SETTINGS_CONFIG_DESCRIPTIONS = [
     "enableLevelCurses",
     ModConfigMenuOptionType.BOOLEAN,
     "Allow Starting Curses",
-    "When disabled, restart the run until no curses are present. When enabled, allow curses or restart until a specific curse is found (if any are selected on the Curses page).",
+    "When disabled, restart until no curses are present. When enabled, allow vanilla curse behavior unless specific curses are selected on the Curses page.",
   ],
   [
     "enableModdedCharacters",
